@@ -12,7 +12,7 @@ public class GameLoop extends Thread {
     private double averageFPS;
     private static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
-//suca tommi200 fack iu giec 400
+//suca tommi200 fack iu giec 400 45645645
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game=game;
         this.surfaceHolder=surfaceHolder;
