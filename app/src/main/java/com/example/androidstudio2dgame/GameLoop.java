@@ -10,9 +10,9 @@ public class GameLoop extends Thread {
     private SurfaceHolder surfaceHolder;
     private double averageUPS;
     private double averageFPS;
-    private static final double MAX_UPS = 60.0;
+    private static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
-
+//suca tommi
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
         this.game=game;
         this.surfaceHolder=surfaceHolder;
@@ -34,7 +34,6 @@ public class GameLoop extends Thread {
     @Override
     public void run() {
         super.run();
-
         Canvas canvas; //è un'area nera rettangolare dove ci si può disegnare
 
         int updateCount=0;
