@@ -10,7 +10,7 @@ public class GameLoop extends Thread {
     private SurfaceHolder surfaceHolder;
     private double averageUPS;
     private double averageFPS;
-    private static final double MAX_UPS = 30.0;
+    public static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
 //suca tommi200 fack iu giec 400 45645645
     public GameLoop(Game game, SurfaceHolder surfaceHolder) {
@@ -54,15 +54,20 @@ public class GameLoop extends Thread {
 
             try{
                 canvas=surfaceHolder.lockCanvas();
-                game.update();
-                game.draw(canvas);
+                synchronized (surfaceHolder){
+
+                    game.update();
+                    game.draw(canvas);
+                    updateCount++;
+                }
                 surfaceHolder.unlockCanvasAndPost(canvas);
+                frameCount++;
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
 
-            updateCount++;
-            frameCount++;
+
+
 
             //pause Game Loop to not exceed target UPS
             elapsedTime=System.currentTimeMillis() - startTime; //tempo trascorso
