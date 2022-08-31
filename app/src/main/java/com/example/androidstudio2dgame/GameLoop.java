@@ -8,8 +8,8 @@ public class GameLoop extends Thread {
     private Game game;
     private boolean isRunning=false;
     private SurfaceHolder surfaceHolder;
-    private double averageUPS;
-    private double averageFPS;
+    private int averageUPS;
+    private int averageFPS;
     public static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
 //suca tommi200 fack iu giec 400 45645645
@@ -18,11 +18,11 @@ public class GameLoop extends Thread {
         this.surfaceHolder=surfaceHolder;
     }
 
-    public double getAverageUPS() {
+    public int getAverageUPS() {
         return averageUPS;
         }
 
-    public double getAverageFPS() {
+    public int getAverageFPS() {
         return averageFPS;
     }
 
@@ -94,8 +94,8 @@ public class GameLoop extends Thread {
 
             elapsedTime=System.currentTimeMillis() - startTime; //tempo trascorso
             if (elapsedTime>=1000){
-                averageUPS= updateCount / (1E-3*elapsedTime);
-                averageFPS= frameCount / (1E-3*elapsedTime);
+                averageUPS= (int)(updateCount / (1E-3*elapsedTime));
+                averageFPS= (int)(frameCount / (1E-3*elapsedTime));
                 updateCount=0;
                 frameCount=0;
                 startTime=System.currentTimeMillis(); //riazzero il tempo di partenza
