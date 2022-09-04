@@ -1,4 +1,4 @@
-package com.example.androidstudio2dgame;
+package GameObject;
 
 import android.graphics.Canvas;
 
@@ -16,6 +16,20 @@ public abstract class GameObject {
         this.positionY=positionY;
     }
 
+    protected static double getDistanceBetweenObj(GameObject obj1, GameObject obj2) {
+        return Math.sqrt(
+                Math.pow(obj2.getPositionX()- obj1.getPositionX(), 2) +
+                Math.pow(obj2.getPositionY()- obj1.getPositionY(), 2)
+        );
+    }
+
     public abstract void draw(Canvas canvas);   // draw e update sono diversi e quindi sono astratti, perchè ogni classe specifica li implementerà
     public abstract void update();
-}
+
+    protected double getPositionX(){
+        return positionX;
+    }
+
+    protected double getPositionY(){
+        return positionY;
+    }}
