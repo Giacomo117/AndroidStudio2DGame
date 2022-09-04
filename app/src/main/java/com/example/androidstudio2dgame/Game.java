@@ -9,6 +9,17 @@ import android.view.SurfaceView;
 
 
 import androidx.core.content.ContextCompat;
+
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import GameObject.Enemy;
+import GameObject.Circle;
+import GameObject.GameObject;
+import GameObject.Player;
+
 /**
  * Questo Game controlla tutti gli oggetti nel gioco ed è responsabile degli aggiornamenti dei dati e delle immagini nello schermo
  * */
@@ -19,6 +30,12 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
     private final GameLoop gameLoop;
     private final Context context;
     private final Joystick joystick;
+
+    //Voglio creare un array di nemici ( in modo che non ce ne sia solo uno)
+    private List<Enemy> enemyList= new ArrayList<Enemy>();
+
+
+    //private final Enemy enemy;
 
     public Game(Context context) {
         super(context);
@@ -33,7 +50,8 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         joystick=new Joystick(275,750,70,40);
 
         //inizializzo il player
-        player=new Player(getContext(),2*500,500,30);
+        player=new Player(getContext(),joystick, 2*500,500,30);
+      //  enemy= new Enemy(getContext(),player, 2*500,500,30);
 
         setFocusable(true); //sarebbe per permettere di dare il focus ad un componente, non so se serve, (forse si)
 
@@ -57,8 +75,8 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
                 }
                 return true;
-                //per il player
-                //player.setPosition((double)event.getX(),(double)event.getY());
+            //per il player
+            //player.setPosition((double)event.getX(),(double)event.getY());
             case MotionEvent.ACTION_MOVE:
                 if(joystick.getIsPressed()){
                     joystick.setActuator((double)event.getX(),(double)event.getY());
@@ -92,6 +110,9 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
         drawFramePerSec(canvas);
         joystick.draw(canvas);
         player.draw(canvas); //per disegnare il player
+       for(Enemy enemy : enemyList){
+           enemy.draw(canvas);
+       }
 
     }
 
@@ -115,7 +136,26 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
 
     public void update() {
         joystick.update(); // joystick
-        player.update(joystick); // per aggiornare il personaggio
+        player.update(); // per aggiornare il personaggio
 
+        //devo creare un update specifico per i nemici
+
+        //creo un nemico se è tempo di crearlo
+        if (Enemy.readyToSpawn()){
+            enemyList.add(new Enemy(getContext(),player));
+        }
+
+        for (Enemy enemy : enemyList){
+            enemy.update();
+        }
+
+        //iteratore che guarda tutti i nemici e vede se si sono scontrati col player
+        Iterator<Enemy> iteratorEnemy=enemyList.iterator();
+        while(iteratorEnemy.hasNext()){
+            if(Circle.isColliding(iteratorEnemy.next(),player)){
+                //Elimino il nemico se ha colliso col player
+                iteratorEnemy.remove();
+            }
+        }
     }
 }
